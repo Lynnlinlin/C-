@@ -13,7 +13,7 @@ void move_room(Dorm&, std::map<std::string, Student>&, std::string, int, int, in
 //学生退学
 void stu_quit(Dorm&, std::map<std::string, Student>&, std::string);
 //学生入学
-void stu_enrol(Dorm&, std::map<std::string, Student>&, std::string, int, int);
+void stu_enrol(Dorm&, std::map<std::string, Student>&, std::string, std::string, int, int);
 
 //增加床位、房间、层数
 void add_beds(Dorm&, int, int, int);

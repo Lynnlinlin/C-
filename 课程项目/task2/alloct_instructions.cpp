@@ -24,7 +24,7 @@ void instructions(Dorm &dorm, map<std::string, Student>& m_Student, istream& in)
 	//匹配对学生的操作
 	const regex pattern_move("MOVE[\\s]+FROM[\\s]+([\\d]+)\\-([\\d]+)[\\s]+TO[\\s]+([\\d]+)\\-([\\d]+)[\\s]*(.*)");
 	const regex pattern_quit("QUIT[\\s]*(.*)");
-	const regex pattern_enrol("ENROL[\\s]+(\\d+)\\-(\\d+)[\\s]*(.*)");
+	const regex pattern_enrol("([^\\s]*)[\\s]*ENROL[\\s]+(\\d+)\\-(\\d+)[\\s]*(.*)");
 	const regex pattern_act("([A-Z]+)[\\s]+(\\d+)[\\s]*(.*)");
 
 	while (getline(in, a_str))
@@ -120,14 +120,15 @@ void instructions(Dorm &dorm, map<std::string, Student>& m_Student, istream& in)
 					//匹配入学、搬入房间命令
 					else if (regex_match(a_instruc, result, pattern_enrol))
 					{
-						string str_enrol_floor = result[1];
-						string str_enrol_room = result[2];
-						a_instruc = result[3];
+						string a_stu_gender = result[1];
+						string str_enrol_floor = result[2];
+						string str_enrol_room = result[3];
+						a_instruc = result[4];
 
 						int enrol_floor = atoi(str_enrol_floor.c_str()) - 1;
 						int enrol_room = atoi(str_enrol_room.c_str()) - 1;
 
-						stu_enrol(dorm, m_Student, a_stu_name, enrol_floor, enrol_room);
+						stu_enrol(dorm, m_Student, a_stu_name, a_stu_gender, enrol_floor, enrol_room);
 
 						cout << "enrolled： " << "enrol room : " << setfill('0') << setw(2) << m_Student[a_stu_name].floor << "-" << setfill('0') << setw(2) << m_Student[a_stu_name].room << endl;
 					}

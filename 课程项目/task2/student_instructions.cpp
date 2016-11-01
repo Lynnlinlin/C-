@@ -16,7 +16,7 @@ int find_stu(Dorm &dorm, int floor, int room, string name)
 	if (i == dorm.floors[floor].rooms[room].beds.size());
 	{
 		cout << "can't find " << name << endl;
-		return NULL;
+		return -1;
 	}
 }
 
@@ -24,12 +24,11 @@ int find_stu(Dorm &dorm, int floor, int room, string name)
 void move_room(Dorm& dorm, map<string, Student>& m_Student, string a_stu_name, int ori_floor, int ori_room, int new_floor, int new_room)
 {
 	int bed_num = find_stu(dorm, ori_floor, ori_room, a_stu_name);
-	if (bed_num)
+	if (bed_num!=-1)
 		dorm.floors[ori_floor].rooms[ori_room].beds.erase(dorm.floors[ori_floor].rooms[ori_room].beds.begin() + bed_num);
 	if (dorm.floors[new_floor].rooms[new_room].capacity > dorm.floors[new_floor].rooms[new_room].beds.size())
 	{
 		Bed bed;
-		bed.enrolled = true;
 		bed.student = a_stu_name;
 		dorm.floors[new_floor].rooms[new_room].beds.push_back(bed);
 		m_Student[a_stu_name].floor = new_floor + 1;
@@ -48,21 +47,21 @@ void stu_quit(Dorm& dorm, map<string, Student>& m_Student, string a_stu_name)
 	int bed_num = find_stu(dorm, floor, room, a_stu_name);
 	dorm.floors[floor].rooms[room].beds.erase(dorm.floors[floor].rooms[room].beds.begin() + bed_num);
 
-	m_Student[a_stu_name].floor = 0;//学生搬出原宿舍后，把宿舍状态归零
-	m_Student[a_stu_name].room = 0;
+	m_Student[a_stu_name].enrolled = 0;
 }
 
 //学生入学
-void stu_enrol(Dorm& dorm, map<string, Student>& m_Student, string a_stu_name, int floor, int room)
+void stu_enrol(Dorm& dorm, map<string, Student>& m_Student, string a_stu_name, string a_stu_gender, int floor, int room)
 {
 	//要宿舍有位置、学生原来没有入宿过才按下面方法入宿
 	if ((dorm.floors[floor].rooms[room].capacity > dorm.floors[floor].rooms[room].beds.size()) &&
-		m_Student[a_stu_name].floor == 0 && m_Student[a_stu_name].room == 0)
+		!m_Student[a_stu_name].enrolled)
 	{
 		Bed bed;
-		bed.enrolled = true;
 		bed.student = a_stu_name;
 		dorm.floors[floor].rooms[room].beds.push_back(bed);
+		m_Student[a_stu_name].gender = a_stu_gender;
+		m_Student[a_stu_name].enrolled = true;
 		m_Student[a_stu_name].floor = floor + 1;
 		m_Student[a_stu_name].room = room + 1;
 	}
@@ -72,9 +71,12 @@ void stu_enrol(Dorm& dorm, map<string, Student>& m_Student, string a_stu_name, i
 		cout << "this room was already fulled" << endl;
 	}
 	//如果该学生曾入宿，并没有退学，就进行换宿舍处理
-	else if (m_Student[a_stu_name].floor != 0 || m_Student[a_stu_name].room != 0)
+	else if (m_Student[a_stu_name].enrolled)
 	{
-		cout << "this student has already enrolled, now change his/her dorm. please don,t enrol again." << endl;
+		cout << "this student has already enrolled, now change his/her dorm." << endl;
+		cout << "original room : " << setfill('0') << setw(2) << m_Student[a_stu_name].floor << "-" << setfill('0') << setw(2) << m_Student[a_stu_name].room <<
+			" new room: " << setfill('0') << setw(2) << floor + 1 << "-" << setfill('0') << setw(2) << room + 1 << endl;
+		move_room(dorm, m_Student, a_stu_name, m_Student[a_stu_name].floor - 1, m_Student[a_stu_name].room - 1, floor, room);
 	}
 	else
 	{

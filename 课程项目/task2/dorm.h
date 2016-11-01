@@ -12,7 +12,6 @@
 typedef struct
 {
 	std::string student;
-	bool enrolled;//ÊÇ·ñÈëÑ§
 }Bed;
 
 typedef struct

@@ -36,6 +36,7 @@ Student init_a_stu()
 	stu.money = MONEY;
 	stu.knowledge = KNOWLEDGE;
 	stu.charm = CHARM;
+	stu.enrolled = false;
 	return stu;
 }
 
@@ -43,7 +44,6 @@ Student init_a_stu()
 Bed init_a_bed()
 {
 	Bed bed;
-	bed.enrolled = false;
 	return bed;
 }
 

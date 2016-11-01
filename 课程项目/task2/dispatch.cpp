@@ -25,6 +25,7 @@ void init_dispatch(Dorm &dorm, map<string, Student>& m_Student, istream& in)
 
 		m_Student[a_stu_info[0]].name = a_stu_info[0];
 		m_Student[a_stu_info[0]].gender = a_stu_info[1];
+		m_Student[a_stu_info[0]].enrolled = true;
 
 		m_Student[a_stu_info[0]].weight = WEIGHT;
 		m_Student[a_stu_info[0]].money = MONEY;
@@ -45,7 +46,6 @@ void init_dispatch(Dorm &dorm, map<string, Student>& m_Student, istream& in)
 
 				Bed bed;
 				bed.student = a_stu_info[0];
-				bed.enrolled = true;
 				dorm.floors[a_stu_bed_info[0]].rooms[a_stu_bed_info[1]].beds.push_back(bed);
 
 				cout << a_stu_info[0] << "\t" << a_stu_info[1] << "\t" << setfill('0') << setw(2) << a_stu_bed_info[0] << "-" << setfill('0') << setw(2) << a_stu_bed_info[1] << endl;

@@ -9,6 +9,7 @@ typedef struct
 {
 	std::string name;
 	std::string gender;
+	bool enrolled;
 	double knowledge;
 	double charm;
 	double weight;
